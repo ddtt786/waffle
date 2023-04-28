@@ -12,7 +12,7 @@
       "matches": ["https://playentry.org/*"],
       "all_frames": true,
       "css": ["waffle.css"],
-      "js": ["waffle.js"]
+      "js": ["purify.js", "waffle.js"]
     }
   ]
 }
