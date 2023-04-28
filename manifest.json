@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Waffle",
   "description": "엔트리 이야기에서 이미지를 쉽게 볼 수 있도록 해주는 확장 프로그램입니다.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "host_permissions": ["https://playentry.org/*"],
   "action": {
     "default_popup": "popup.html"
