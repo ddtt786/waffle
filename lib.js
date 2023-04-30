@@ -2,7 +2,12 @@ function linkify(text) {
   const urlRegex = /((http[s]?|ftp):\/\/[^"\s]+)(?![^<]*>|[^<>]*<\/)/g;
 
   const linkedText = text.replace(urlRegex, (match) => {
-    return `<a href="${match}" rel="nofollow" class="waffle_link">${match}</a>`;
+    return match.startsWith("https://playentry.org/") ||
+      match.startsWith("https://naver.me/")
+      ? `<a href="${match}" rel="nofollow" class="waffle_link">${match}</a>`
+      : `<a href="/redirect/?external=${encodeURIComponent(
+          match
+        )}" rel="nofollow" class="waffle_link">${match}</a>`;
   });
 
   const div = document.createElement("div");
