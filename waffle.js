@@ -46,7 +46,7 @@ function render() {
         }
         imgs(contents)
           ?.reverse()
-          .slice(0, 3)
+          .slice(0, 1)
           .forEach((url) => {
             const dom = document.createElement("img");
             dom.src = url;
