@@ -2,6 +2,10 @@ console.log("waffle!");
 
 let loaded = false;
 
+if (!localStorage.getItem("block")) {
+  localStorage.setItem("block", "[]");
+}
+
 async function upload() {
   return new Promise((res, _) => {
     const input = document.createElement("input");
@@ -44,20 +48,49 @@ function render() {
             clean(contents)
           );
         }
+
+        const blocked = JSON.parse(localStorage.getItem("block"));
         imgs(contents)
           ?.reverse()
           .slice(0, 1)
           .forEach((url) => {
-            const pdom = document.createElement("div");
-            pdom.className = "pwaffle";
+            const banned = blocked.includes(
+              d.querySelector("li > div > a").href
+            );
             const dom = document.createElement("img");
-            dom.src = url;
+            dom.src = banned ? "#" : url;
+            dom.alt = banned
+              ? "이 사용자는 차단되었습니다. 차단을 해제하려면 클릭하세요."
+              : "image";
             dom.className = "waffle";
             dom.addEventListener("click", () => {
-              dom.style.filter = "none";
+              if (banned) {
+                if (confirm("차단을 풀까요?")) {
+                  localStorage.setItem(
+                    "block",
+                    JSON.stringify(
+                      blocked.filter(
+                        (u) => u !== d.querySelector("li > div > a").href
+                      )
+                    )
+                  );
+                  alert("앞으로 이 사용자가 올린 글의 이미지를 로드합니다.");
+                  location.reload();
+                }
+              } else {
+                if (
+                  confirm("이 사용자가 올린 글의 이미지를 로드하지 않을까요?")
+                ) {
+                  blocked.push(d.querySelector("li > div > a").href);
+                  localStorage.setItem("block", JSON.stringify(blocked));
+                  alert(
+                    "앞으로 이 사용자가 올린 글의 이미지를 로드하지 않습니다."
+                  );
+                  location.reload();
+                }
+              }
             });
-            d.querySelectorAll("div > div")[1].prepend(pdom);
-            pdom.append(dom);
+            d.querySelectorAll("div > div")[1].prepend(dom);
           });
       } catch (error) {
         console.log(error);
@@ -83,4 +116,4 @@ setInterval(() => {
     }
     render();
   }
-}, 10);
+}, 1000);
