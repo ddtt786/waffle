@@ -1,45 +1,31 @@
 console.log("waffle!");
 
-function linkify(text) {
-  const urlRegex = /((http[s]?|ftp):\/\/[^"\s]+)(?![^<]*>|[^<>]*<\/)/g;
+let loaded = false;
 
-  const linkedText = text.replace(urlRegex, (match) => {
-    return `<a href="${match}" rel="nofollow" class="waffle_link">${match}</a>`;
-  });
+async function upload() {
+  return new Promise((res, _) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      const form = new FormData();
+      form.append("file", file);
+      form.append("type", "notcompress");
 
-  const div = document.createElement("div");
-  div.innerHTML = linkedText;
-
-  const links = div.getElementsByTagName("a");
-  for (let i = 0; i < links.length; i++) {
-    links[i].setAttribute("target", "_blank");
-  }
-
-  return div.innerHTML;
-}
-
-function urlchecker(inputString) {
-  const pattern = /{{(.*?)}}/g;
-  const matches = inputString.match(pattern);
-
-  if (matches) {
-    const extractedText = matches
-      .map((match) => match.replace("{{", "").replace("}}", ""))
-      .filter((text) => {
-        try {
-          new URL(atob(text));
-          return true;
-        } catch (error) {
-          return false;
-        }
-      })
-      .map((d) => {
-        return atob(d);
+      const d = await (
+        await fetch("https://playentry.org/rest/picture", {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+      console.log(file);
+      res({
+        id: d.filename,
+        ext: d.imageType,
       });
-    return extractedText;
-  } else {
-    return null;
-  }
+    });
+  });
 }
 
 function render() {
@@ -51,11 +37,6 @@ function render() {
       [...d.querySelectorAll(".waffle")].length === 0 &&
       !d.querySelector("div > textarea")
     ) {
-      function clean(d) {
-        const pattern = /{{(.*?)}}/g;
-        const cleanedText = d.replace(pattern, "");
-        return cleanedText;
-      }
       try {
         const contents = d.querySelectorAll("div > div")[1].innerText;
         if (!d.querySelectorAll("div > div")[1].querySelector(".waffle_link")) {
@@ -63,10 +44,9 @@ function render() {
             clean(contents)
           );
         }
-        urlchecker(contents)
+        imgs(contents)
           ?.reverse()
           .forEach((url) => {
-            console.log(url);
             const dom = document.createElement("img");
             dom.src = url;
             dom.className = "waffle";
@@ -79,11 +59,21 @@ function render() {
   });
 }
 
+function click() {
+  upload().then((d) => {
+    navigator.clipboard.writeText(`{{*${d.id}}${d.ext}}`);
+  });
+}
+
 setInterval(() => {
   if (
     location.pathname === "/community/entrystory/list" &&
     document.querySelector(".nextInner li")
   ) {
+    if (!loaded) {
+      document.querySelector("div > h2").removeEventListener("click", click);
+      document.querySelector("div > h2").addEventListener("click", click);
+    }
     render();
   }
 }, 10);
