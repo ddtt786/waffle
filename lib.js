@@ -17,11 +17,11 @@ function linkify(text) {
 }
 
 function clean(str) {
-  return str.replace(/{{\*\w{32}\}\w{3}}/g, "");
+  return str.replace(/{{\*\w{32}\}\w{3,4}}/g, "");
 }
 
 function imgs(str) {
-  const regex = /{{\*(\w{32})}(\w{3})}/g;
+  const regex = /{{\*(\w{32})}(\w{3,4})}/g;
   const matches = str.matchAll(regex);
   const output = [];
 
