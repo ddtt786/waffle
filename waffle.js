@@ -46,10 +46,14 @@ function render() {
         }
         imgs(contents)
           ?.reverse()
+          .slice(0, 3)
           .forEach((url) => {
             const dom = document.createElement("img");
             dom.src = url;
             dom.className = "waffle";
+            dom.addEventListener("click", () => {
+              dom.style.display = "none";
+            });
             d.querySelectorAll("div > div")[1].prepend(dom);
           });
       } catch (error) {

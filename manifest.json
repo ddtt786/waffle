@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Waffle",
   "description": "엔트리 이야기에서 이미지를 쉽게 공유할 수 있도록 해주는 확장 프로그램입니다.",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "icons": {
     "16": "icon/16.png",
     "32": "icon/32.png",
