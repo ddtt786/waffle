@@ -44,3 +44,40 @@ function range(d) {
     });
   });
 }
+
+async function upload() {
+  return new Promise((res, _) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      const form = new FormData();
+      form.append("file", file);
+      form.append("type", "notcompress");
+
+      const d = await (
+        await fetch("https://playentry.org/rest/picture", {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+      res({
+        id: d.filename,
+        ext: d.imageType,
+      });
+    });
+  });
+}
+
+function click() {
+  upload().then((d) => {
+    navigator.clipboard.writeText(
+      `https://playentry.org/uploads/${d.id.slice(0, 2)}/${d.id.slice(2, 4)}/${
+        d.id
+      }.${d.ext}`
+    );
+  });
+}
+
+document.querySelector("div > h2").addEventListener("click", click);
