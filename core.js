@@ -22,7 +22,7 @@ function range(d) {
           image.addEventListener("click", () => {
             if (blocked) {
               if (confirm("이 사용자를 차단 해제할까요?")) {
-                block.filter((u) => u !== user);
+                block = block.filter((u) => u !== user);
                 chrome.storage.local.set({ block });
                 image.src = url;
               }
