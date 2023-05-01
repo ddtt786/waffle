@@ -3,6 +3,18 @@
  */
 function range(d) {
   chrome.storage.local.get("block", function ({ block }) {
+    function blocking(id) {
+      block.push(id);
+      chrome.storage.local.set({ block });
+      location.reload();
+    }
+
+    function unblock(id) {
+      block = block.filter((u) => u !== id);
+      chrome.storage.local.set({ block });
+      location.reload();
+    }
+
     d.forEach((dom) => {
       const contents = dom.querySelectorAll("div > div")[1];
       const link = contents.querySelector("a");
@@ -23,21 +35,16 @@ function range(d) {
         image.addEventListener("click", () => {
           if (blocked) {
             if (confirm("이 사용자를 차단 해제할까요?")) {
-              block = block.filter((u) => u !== user);
-              chrome.storage.local.set({ block });
-              image.src = url;
-              blocked = false;
+              unblock(user);
             }
           } else {
             if (confirm("이 사용자를 차단할까요?")) {
-              block.push(user);
-              chrome.storage.local.set({ block });
-              image.removeAttribute("src");
-              blocked = true;
+              blocking(user);
             }
           }
         });
 
+        link.setAttribute("url", url);
         link.innerText = null;
         link.removeAttribute("href");
         link.append(image);
