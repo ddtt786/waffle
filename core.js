@@ -17,39 +17,42 @@ function range(d) {
 
     d.forEach((dom) => {
       const contents = dom.querySelectorAll("div > div")[1];
-      const link = contents.querySelector("a");
-      if (!link) return;
-      const url = link.href;
-      if (url.startsWith("https://playentry.org/uploads")) {
-        const user = link.parentElement.parentElement
-          .querySelector("li > div > a")
-          .href.match(/[a-f\d]{24}/)[0];
-        let blocked = block.includes(user);
+      [...contents.querySelectorAll("a")].forEach((link) => {
+        const url = link.href;
+        if (
+          url.startsWith("https://playentry.org/uploads") &&
+          !link.parentElement.querySelector(".waffle")
+        ) {
+          const user = link.parentElement.parentElement
+            .querySelector("li > div > a")
+            .href.match(/[a-f\d]{24}/)[0];
+          let blocked = block.includes(user);
 
-        const image = document.createElement("img");
-        if (!blocked) {
-          image.src = url;
-        }
-        image.alt = "이 사용자는 차단되었습니다. 차단 해제하려면 클릭하세요.";
-        image.className = "waffle";
-        image.addEventListener("click", () => {
-          if (blocked) {
-            if (confirm("이 사용자를 차단 해제할까요?")) {
-              unblock(user);
-            }
-          } else {
-            if (confirm("이 사용자를 차단할까요?")) {
-              blocking(user);
-            }
+          const image = document.createElement("img");
+          if (!blocked) {
+            image.src = url;
           }
-        });
+          image.alt = "이 사용자는 차단되었습니다. 차단 해제하려면 클릭하세요.";
+          image.className = "waffle";
+          image.addEventListener("click", () => {
+            if (blocked) {
+              if (confirm("이 사용자를 차단 해제할까요?")) {
+                unblock(user);
+              }
+            } else {
+              if (confirm("이 사용자를 차단할까요?")) {
+                blocking(user);
+              }
+            }
+          });
 
-        link.setAttribute("url", url);
-        link.innerText = null;
-        link.removeAttribute("href");
-        link.append(image);
-        link.style.display = "flex";
-      }
+          link.setAttribute("url", url);
+          link.innerText = null;
+          link.removeAttribute("href");
+          link.append(image);
+          link.style.display = "flex";
+        }
+      });
     });
   });
 }
@@ -89,4 +92,5 @@ function click() {
   });
 }
 
-document.querySelector("div > h2").addEventListener("click", click);
+document.querySelector("div > h2")?.removeEventListener("click", click);
+document.querySelector("div > h2")?.addEventListener("click", click);

@@ -1,11 +1,9 @@
-const body = document.querySelector("body");
-
 chrome.runtime.onMessage.addListener((req) => {
   if (req === "LOAD") {
     const list = [
       ...document
         .querySelector(".nextInner section")
-        .querySelectorAll("ul > li[class]"),
+        ?.querySelectorAll("ul > li[class]"),
     ];
     if (list.length != 0) range(list);
   }
@@ -21,9 +19,12 @@ const observer = new MutationObserver(() => {
   const list = [
     ...document
       .querySelector(".nextInner section")
-      .querySelectorAll("ul > li[class]"),
+      ?.querySelectorAll("ul > li[class]"),
   ];
   if (list.length != 0) range(list);
 });
 
-observer.observe(body, { childList: true, subtree: true });
+observer.observe(document.querySelector("body"), {
+  childList: true,
+  subtree: true,
+});
