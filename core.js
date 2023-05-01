@@ -5,7 +5,7 @@ function range(d) {
   chrome.storage.local.get("block", function ({ block }) {
     d.forEach((dom) => {
       const contents = dom.querySelectorAll("div > div")[1];
-      [...contents.querySelectorAll("a")].forEach((link) => {
+      [...contents.querySelectorAll("a")].slice(0, 2).forEach((link) => {
         const url = link.href;
         if (url.startsWith("https://playentry.org/uploads")) {
           const user = link.parentElement.parentElement
