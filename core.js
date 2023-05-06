@@ -20,7 +20,7 @@ function range(d) {
       [...contents.querySelectorAll("a")].forEach((link) => {
         const url = link.href;
         if (
-          url.startsWith("https://playentry.org/uploads") &&
+          url.startsWith("https://playentry.org/uploads/") &&
           !link.parentElement.querySelector(".waffle")
         ) {
           const user = link.parentElement.parentElement
@@ -31,8 +31,10 @@ function range(d) {
           const image = document.createElement("img");
           if (!blocked) {
             image.src = url;
+          } else {
+            image.alt =
+              "이 사용자는 차단되었습니다. 차단 해제하려면 클릭하세요.";
           }
-          image.alt = "이 사용자는 차단되었습니다. 차단 해제하려면 클릭하세요.";
           image.className = "waffle";
           image.addEventListener("click", () => {
             if (blocked) {
