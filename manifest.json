@@ -1,24 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "Waffle",
-  "description": "엔트리 이야기에서 이미지를 쉽게 공유할 수 있도록 해주는 확장 프로그램입니다.",
-  "version": "0.6.7",
+  "name": "knight",
+  "version": "1.0.0",
+  "description": "엔트리 이야기 사진 확장 프로그램입니다.",
   "icons": {
     "16": "icon/16.png",
     "32": "icon/32.png",
     "48": "icon/48.png",
     "128": "icon/128.png"
   },
-  "permissions": ["storage", "unlimitedStorage", "tabs"],
   "host_permissions": ["https://playentry.org/*"],
-  "background": {
-    "service_worker": "background.js"
-  },
+  "permissions": ["activeTab", "storage", "unlimitedStorage", "clipboardWrite"],
   "content_scripts": [
     {
       "matches": ["https://playentry.org/*"],
-      "css": ["waffle.css"],
-      "js": ["core.js", "event.js"]
+      "css": ["knight.css"],
+      "js": ["lib.js", "core.js", "event.js"]
     }
   ]
 }

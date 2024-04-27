@@ -1,27 +1,14 @@
-chrome.runtime.onMessage.addListener((req) => {
-  if (req === "LOAD") {
-    const list = [
-      ...document
-        .querySelector(".nextInner section")
-        ?.querySelectorAll("ul > li[class]"),
-    ];
-    if (list.length != 0) range(list);
-  }
-});
-
-chrome.storage.local.get("block", function (block) {
-  if (Object.keys(block).length === 0) {
+chrome.storage.local.get().then(({ block }) => {
+  if (!block) {
     chrome.storage.local.set({ block: [] });
   }
 });
 
 const observer = new MutationObserver(() => {
-  const list = [
-    ...document
-      .querySelector(".nextInner section")
-      ?.querySelectorAll("ul > li[class]"),
-  ];
-  if (list.length != 0) range(list);
+  const contents = document.querySelector(".nextInner section");
+  if (!contents) return;
+  if ([...contents.querySelectorAll("ul > li[class]")].length >= 10)
+    range(contents);
 });
 
 observer.observe(document.querySelector("body"), {

@@ -1,7 +1,20 @@
-.waffle {
+.genimg {
+  display: inline-block;
+  width: 23px;
+  height: 20px;
+  margin: 1px 0px 0px 7px;
+  background-image: url("https://playentry.org/img/IcoCmtPicture.svg");
+  background-repeat: no-repeat;
+  vertical-align: top;
+}
+
+.imgbox {
+  overflow: hidden;
+}
+
+.imgbox > img {
   border-radius: 5px;
   margin-bottom: 10px;
   max-width: 70%;
   max-height: 400px;
-  display: flex;
 }
