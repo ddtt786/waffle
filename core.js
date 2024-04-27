@@ -63,6 +63,7 @@ async function range(contents) {
     )
       return;
     link.innerText = "";
+    link.setAttribute("onclick", "event.preventDefault()");
 
     const box = document.createElement("div");
     box.className = "imgbox";
