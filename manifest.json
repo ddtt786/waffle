@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "waffle",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "엔트리 이야기 사진 확장 프로그램입니다.",
   "icons": {
     "16": "icon/16.png",
@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["https://playentry.org/*"],
-      "css": ["knight.css"],
+      "css": ["waffle.css"],
       "js": ["lib.js", "core.js", "event.js"]
     }
   ]
